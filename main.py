@@ -1,7 +1,40 @@
 #imports
 
 
-#functions that determine global variables like HRmax, THRZ, as well as other functions like stretch range for each song
+
+
+# Input age and genre choice
+age = int(input("Enter user's age: "))
+#print(f"User's age is: {age}")
+
+genres = {1: 'Country', 2: 'Pop', 3: 'Rock', 4: 'Rap', 5: 'Electronic Dance'}
+choice = int(input(f"User's preferred genre: {', '.join(f'{k}. {v}' for k, v in genres.items())}: "))
+#print(f"User's preferred genre is: {genres.get(choice, 'Invalid choice')}")
+
+
+
+
+# Calculate Ranges for HR
+maxHR = int(191.5 - .007 * age**2) # max heart rate
+#print(f"Users max heart rate is: {maxHR}")
+
+maxTHRZ_HI = int(maxHR * .9) # Target Heart Rate Zone Max (High Intensity Interval)
+minTHRZ_HI = int(maxHR * .85) # THRZ Min - HII
+
+maxTHRZ_LI = int(maxHR * .75) # Target Heart Rate Zone Max (Low Intensity Interval)
+minTHRZ_LI = int(maxHR * .65) # THRZ Min - LII
+
+maxTHRZ_WC = int(maxHR * .7) # Target Heart Rate Zone Max (Warmup/Cooldown)
+minTHRZ_WC = int(maxHR * .6) # THRZ Min - WC
+
+
+
+# Calculate Stretch Ranges for Song
+
+
+
+
+
 
 
 
