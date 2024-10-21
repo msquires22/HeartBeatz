@@ -60,3 +60,9 @@ stream.stop_stream()
 stream.close()
 song.close()
 p.terminate()
+
+
+
+
+
+#from https://stackoverflow.com/questions/75504433/changing-speed-of-song-while-its-playing-and-have-the-changed-effects-in-the-son
