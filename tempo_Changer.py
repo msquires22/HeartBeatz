@@ -3,7 +3,7 @@ import wave
 import sys
 
 # Open the wave file
-song = wave.open("closer.wav", "rb")
+song = wave.open("music/closer.wav", "rb")
 
 # Instantiate PyAudio
 p = pyaudio.PyAudio()
