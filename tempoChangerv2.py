@@ -3,13 +3,13 @@ import sounddevice as sd
 import numpy as np
 import threading
 
-# Load the audio file (make sure the correct path is used)
+# Load the audio file
 y, sr = librosa.load("closer.wav", sr=None)
 
 # Set the initial tempo change (1.0 means no change)
 tempo_change = 1.0
 current_idx = 0
-chunk_size = 1024  # Number of frames to process at a time
+chunk_size = 2048  # Larger chunk size to process more audio at once
 
 def adjust_tempo(new_tempo):
     """
@@ -22,7 +22,7 @@ def adjust_tempo(new_tempo):
 
 def audio_callback(outdata, frames, time, status):
     global current_idx, tempo_change, y
-    
+
     # Get the current chunk of audio
     chunk = y[current_idx:current_idx + frames]
 
@@ -33,19 +33,18 @@ def audio_callback(outdata, frames, time, status):
     # Apply time-stretching to adjust tempo without changing pitch
     stretched_chunk = librosa.effects.time_stretch(chunk, rate=tempo_change)
 
-    # If the stretched chunk is smaller than the frames, pad with zeros
+    # Handle cases where the stretched_chunk is smaller than the buffer
     if len(stretched_chunk) < frames:
         stretched_chunk = np.pad(stretched_chunk, (0, frames - len(stretched_chunk)))
 
     # Ensure the buffer matches the frame size and send the data
     outdata[:frames] = stretched_chunk[:frames].reshape(-1, 1)
 
-    # Update the current index to move to the next chunk of audioß
+    # Update the current index to move to the next chunk of audio
     current_idx += frames
     if current_idx >= len(y):  # Stop if we reach the end of the file
         print("Reached the end of the audio, stopping playback.")
         raise sd.CallbackStop()
-
 
 # Function to play the audio with dynamic tempo adjustment
 def play_audio():
