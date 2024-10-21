@@ -1,4 +1,11 @@
 # HeartBeatz
+Notes: I got a working tempo adjuster now from stack overflow, now we need to modify it so it can intake new songs, and have the changes come from HR, not user input
+
+If you add any song files, they need to be .wav. There are online converters to switch from mp3 to wav, then add it to the music folder. We can organzie the music folder by genre once we have a working system, I say keep it small for now for just a few test files
+
+
+------------
+
 Instructions for setting up/running virtual enviornment (on Mac):
 
 $ = terminal command within the HeartBeatz directory
