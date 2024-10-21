@@ -1,70 +1,65 @@
-import sounddevice as sd
-import librosa
-import numpy as np
-import time
+import pyaudio
+import wave
+import sys
 
-# Load audio file using librosa
-y, sr = librosa.load("/Users/mikeysquires/Documents/FALL 2025/COS 436/HeartBeatz/BabyElephantWalk60.wav", sr=None)
+# Open the wave file
+song = wave.open("closer.wav", "rb")
 
-# Initial tempo change factor (1.0 means normal speed)
-tempo_change = 1.0
+# Instantiate PyAudio
+p = pyaudio.PyAudio()
 
-# This will store the position in the audio array
-current_idx = 0
-chunk_size = 512  # Number of frames to process at a time
+# Define initial playback speed
+speed = 1.0
 
 
-def adjust_tempo(new_tempo):
-    """
-    This function adjusts the tempo dynamically.
-    new_tempo: The new tempo factor (e.g., 1.2 for 20% faster, 0.8 for 20% slower)
-    """
-    global tempo_change
-    tempo_change = new_tempo
-    print(f"Tempo adjusted to: {tempo_change}")
+# Define callback function to stream the song
+def callback(in_data, frame_count, time_info, status):
+    global speed
+
+    # Read in more or fewer frames based on speed
+    frames_to_read = int(frame_count * speed)
+    data = song.readframes(frames_to_read)
+
+    # If end of song is reached, stop playback
+    if data == b'':
+        return None, pyaudio.paComplete
+
+    # If speed is less than 1, add zeros to slow down playback
+    if speed < 1.0:
+        data += b'\x00' * (frame_count - frames_to_read) * song.getsampwidth() * song.getnchannels()
+
+    return data, pyaudio.paContinue
 
 
-# Define callback function to process audio in real-time
-def audio_callback(outdata, frames, time, status):
-    global current_idx, tempo_change, y
-    
-    # Get a chunk of the audio data
-    chunk = y[current_idx:current_idx + chunk_size]
-    
-    # Apply time-stretching to adjust tempo without changing pitch
-    stretched_chunk = librosa.effects.time_stretch(chunk, tempo_change)
-    
-    # If the processed chunk is smaller than the buffer, pad it with zeros
-    if len(stretched_chunk) < frames:
-        outdata[:len(stretched_chunk)] = stretched_chunk.reshape(-1, 1)
-        outdata[len(stretched_chunk):] = 0  # Fill the remaining buffer with silence
-    else:
-        outdata[:] = stretched_chunk[:frames].reshape(-1, 1)
+# Open a stream and start playing the song
+stream = p.open(format=p.get_format_from_width(song.getsampwidth()),
+                channels=song.getnchannels(),
+                rate=song.getframerate(),
+                output=True,
+                stream_callback=callback)
 
-    # Update the current index to move to the next chunk of audio
-    current_idx += chunk_size
-    if current_idx >= len(y):  # Loop the audio if we reach the end
-        current_idx = 0
+stream.start_stream()
+
+# Allow user to input speed changes during playback
+while stream.is_active():
+    try:
+        # Read user input
+        speed_input = input("Enter speed (1.0 = normal speed): ")
+        # Convert input to float
+        speed = float(speed_input)
+    except KeyboardInterrupt:
+        # If user interrupts with Ctrl+C, stop playback
+        stream.stop_stream()
+        stream.close()
+        song.close()
+        p.terminate()
+        sys.exit()
+
+# Stop and close the stream and PyAudio
+stream.stop_stream()
+stream.close()
+song.close()
+p.terminate()
 
 
-# Function to handle playback with dynamic tempo adjustments
-def play_audio():
-    with sd.OutputStream(samplerate=sr, channels=1, callback=audio_callback):
-        print("Playing... Use adjust_tempo(new_tempo) to change the speed dynamically.")
-        sd.sleep(len(y) // sr * 1000)  # Keep the stream open for the duration of the audio
-
-
-# Start the audio playback
-play_audio()
-
-# Wait 5 seconds and then change the tempo
-time.sleep(5)
-adjust_tempo(1.5)  # Speed up by 50%
-
-# Wait another 5 seconds and slow it down
-time.sleep(5)
-adjust_tempo(0.75)  # Slow down by 25%
-
-# Example of dynamically adjusting the tempo while playing:
-# adjust_tempo(1.5)  # Speeds up the playback by 50%
-# adjust_tempo(0.75)  # Slows down the playback by 25%
+#from https://stackoverflow.com/questions/75504433/changing-speed-of-song-while-its-playing-and-have-the-changed-effects-in-the-son
