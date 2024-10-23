@@ -1,3 +1,6 @@
+#this version works, use it as an example, make modifications to tempo_Changer.py for our system
+
+
 import pyaudio
 import wave
 import sys
@@ -10,10 +13,6 @@ p = pyaudio.PyAudio()
 
 # Define initial playback speed
 speed = 1.0
-
-# if its based on heart rate, we could use the formula speed = heart_rate_bpm /song_bpm. We could have an array to start off with
-# of all the songs, indexing them, and associating them with their orginial bpm
-
 
 
 # Define callback function to stream the song
