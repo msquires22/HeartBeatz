@@ -3,13 +3,13 @@ import wave
 import sys
 
 # Open the wave file
-song = wave.open("music/closer.wav", "rb")
+song = wave.open("music/nomoney.wav", "rb")
 
 # Instantiate PyAudio
 p = pyaudio.PyAudio()
 
 # Define initial playback speed
-speed = 1.0
+speed = 1.3
 
 # if its based on heart rate, we could use the formula speed = heart_rate_bpm /song_bpm. We could have an array to start off with
 # of all the songs, indexing them, and associating them with their orginial bpm
@@ -48,7 +48,7 @@ stream.start_stream()
 while stream.is_active():
     try:
         # Read user input
-        speed_input = input("Enter speed (1.0 = normal speed): ")
+        speed_input = input("Enter speed (1.3 = initial speed): ")
         # Convert input to float
         speed = float(speed_input)
     except KeyboardInterrupt:

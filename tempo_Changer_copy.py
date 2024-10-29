@@ -7,13 +7,10 @@ import sys
 
 # Open the wave file
 song = wave.open("music/closer.wav", "rb")
-
 # Instantiate PyAudio
 p = pyaudio.PyAudio()
-
 # Define initial playback speed
 speed = 1.0
-
 
 # Define callback function to stream the song
 def callback(in_data, frame_count, time_info, status):
