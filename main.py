@@ -1,28 +1,43 @@
-#imports
+#region IMPORTS
 import pyaudio
 import wave
 import sys
 import csv
 import time
+from songLists import country, electronicDance, pop, rap, rock
+#endregion
 
-# Open the wave file
-song = wave.open("music/closer.wav", "rb")
-# Instantiate PyAudio
-p = pyaudio.PyAudio()
-# Define initial playback speed
-speed = 1.0
-
+#region INPUTS
 # Input age and genre choice
 age = int(input("Enter user's age: "))
-print(f"User's age is: {age}")
+#print(f"User's age is: {age}")
 
-genres = {1: 'Country', 2: 'Pop', 3: 'Rock', 4: 'Rap', 5: 'Electronic Dance'}
-choice = int(input(f"User's preferred genre: {', '.join(f'{k}. {v}' for k, v in genres.items())}: "))
-print(f"User's preferred genre is: {genres.get(choice, 'Invalid choice')}")
+# Map user choices to playlists
+genres = {
+    1: country,
+    2: pop,
+    3: rock,
+    4: rap,
+    5: electronicDance
+}
+
+# Get user input and assign the chosen playlist
+choice = int(input("User's preferred genre: 1. Country, 2. Pop, 3. Rock, 4. Rap, 5. Electronic Dance: "))
+playlist = genres.get(choice)
+
+# Display result
+# if playlist:
+#     print("Selected playlist:", playlist)
+# else:
+#     print("Invalid choice")
+
+#endregion
+
+#region CALCULATE RANGES
 
 # Calculate Ranges for HR
 maxHR = int(191.5 - .007 * age**2) # max heart rate
-print(f"Users max heart rate is: {maxHR}")
+#print(f"Users max heart rate is: {maxHR}")
 
 maxTHRZ_HI = int(maxHR * .9) # Target Heart Rate Zone Max (High Intensity Interval)
 minTHRZ_HI = int(maxHR * .75) # THRZ Min - HII
@@ -33,18 +48,25 @@ minTHRZ_LI = int(maxHR * .5) # THRZ Min - LII
 maxTHRZ_WC = int(maxHR * .5) # Target Heart Rate Zone Max (Warmup/Cooldown)
 minTHRZ_WC = int(maxHR * .4) # THRZ Min - WC
 
-#################
+#endregion
+
+
 
 #Calls to next song, can do this in prototype #2
 
 #################
 
+# Open the wave file
+song = wave.open("music/closer.wav", "rb")
+# Instantiate PyAudio
+p = pyaudio.PyAudio()
+# Define initial playback speed
+speed = 1.0
+
+
 print("Tell user to begin warming up")
 
 #fetch heart rate data
-
-
-
 song = wave.open("music/nomoney.wav", "rb")
     
  # Instantiate PyAudio
