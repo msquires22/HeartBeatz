@@ -35,8 +35,8 @@ heart_rate_zones = {
 
 # Define time intervals for each zone (in seconds)
 time_intervals = [
-    (10, "warmup"),  # 3 minutes in warmup
-    (10, "high"),    # 3 minutes in high intensity
+    (15, "warmup"),  # 3 minutes in warmup
+    (15, "high"),    # 3 minutes in high intensity
     (180, "low"),     # 3 minutes in low intensity
     (180, "high"),
     (180, "low"),
