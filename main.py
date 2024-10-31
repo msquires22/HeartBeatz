@@ -109,6 +109,7 @@ def adjust_speed_based_on_heart_rate(heart_rate):
 
     # Set speed based on the heart rate and current zone
     zone_min, zone_max = heart_rate_zones[current_zone]
+    print(f"Current zone: {current_zone}, HR target range: {zone_min}-{zone_max}")  # Print current THRZ range
     new_speed = calculate_tempo_adjustment(heart_rate, zone_min, zone_max)
     set_playback_speed(new_speed)
 
