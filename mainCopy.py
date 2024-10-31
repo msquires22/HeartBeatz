@@ -1,6 +1,7 @@
 #region IMPORTS
 import threading
-from audio_player import play_song_with_heart_rate_control
+import time
+from audio_player import play_song, set_playback_speed
 from songLists import country, electronicDance, pop, rap, rock
 #endregion
 
@@ -53,17 +54,28 @@ def get_current_heart_rate():
     global current_heart_rate
     while True:
         try:
-            # Continuously prompt for heart rate input
             current_heart_rate = int(input("Enter current heart rate: "))
+            adjust_speed_based_on_heart_rate(current_heart_rate)
         except ValueError:
             print("Please enter a valid heart rate as an integer.")
+
+def adjust_speed_based_on_heart_rate(heart_rate):
+    """Calculate and set playback speed based on heart rate and target zones."""
+    for _, zone in time_intervals:
+        zone_min, zone_max = heart_rate_zones[zone]
+        if heart_rate < zone_min:
+            set_playback_speed(1.2)  # Increase speed to motivate
+        elif heart_rate > zone_max:
+            set_playback_speed(0.8)  # Decrease speed to slow down
+        else:
+            set_playback_speed(1.0)  # Normal speed in target zone
+        break  # Exit after setting speed for the current interval
 
 # Start a separate thread for continuous heart rate input
 threading.Thread(target=get_current_heart_rate, daemon=True).start()
 
-# Play each song in the selected playlist with heart rate-based tempo control
+# Play each song in the selected playlist
 for song in playlist:
     song_path = song["file"]  # Extract the file path from the song dictionary
     print(f"Playing {song['name']}")
-    # Pass a lambda function to get the latest heart rate dynamically
-    play_song_with_heart_rate_control(song_path, lambda: current_heart_rate, heart_rate_zones, time_intervals)
+    play_song(song_path)
