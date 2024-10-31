@@ -1,5 +1,6 @@
 #region IMPORTS
 import threading
+import time
 import math
 from audio_player import play_song, set_playback_speed
 from songLists import country, electronicDance, pop, rap, rock
@@ -34,8 +35,8 @@ heart_rate_zones = {
 
 # Define time intervals for each zone (in seconds)
 time_intervals = [
-    (180, "warmup"),  # 3 minutes in warmup
-    (180, "high"),    # 3 minutes in high intensity
+    (10, "warmup"),  # 3 minutes in warmup
+    (10, "high"),    # 3 minutes in high intensity
     (180, "low"),     # 3 minutes in low intensity
     (180, "high"),
     (180, "low"),
@@ -46,8 +47,11 @@ time_intervals = [
 ]
 #endregion
 
-# Global variable for current heart rate
+# Global variables
 current_heart_rate = 0
+current_zone = time_intervals[0][1]  # Start in the first zone
+zone_index = 0
+zone_end_time = time.time() + time_intervals[0][0]  # Set the end time for the first interval
 
 def get_current_heart_rate():
     """Continuously update the heart rate from user input."""
@@ -63,27 +67,22 @@ def get_current_heart_rate():
 def calculate_tempo_adjustment(heart_rate, zone_min, zone_max):
     """
     Calculate playback speed adjustment based on heart rate.
-    Returns a tempo between 0.8 and 1.25 based on proximity to the target zone.
+    Returns a tempo between 0.85 and 1.15 based on proximity to the target zone.
     """
-    # Define limits for playback speed
-    max_speed = 1.25
-    min_speed = 0.8
+    max_speed = 1.15
+    min_speed = 0.85
 
     if heart_rate < zone_min:
         # Heart rate is below target zone - scale up tempo
         difference = zone_min - heart_rate
-        max_difference = zone_min * 0.25  # Maximum difference for scaling
-
-        # Scale tempo using an exponential function for gradual change
+        max_difference = zone_min * 0.25
         tempo_increase = max_speed - (max_speed - 1.0) * math.exp(-difference / max_difference)
         return min(max(1.0, tempo_increase), max_speed)
     
     elif heart_rate > zone_max:
         # Heart rate is above target zone - scale down tempo
         difference = heart_rate - zone_max
-        max_difference = zone_max * 0.25  # Maximum difference for scaling
-
-        # Scale tempo using an exponential function for gradual change
+        max_difference = zone_max * 0.25
         tempo_decrease = min_speed + (1.0 - min_speed) * math.exp(-difference / max_difference)
         return max(min(1.0, tempo_decrease), min_speed)
     
@@ -92,12 +91,26 @@ def calculate_tempo_adjustment(heart_rate, zone_min, zone_max):
         return 1.0
 
 def adjust_speed_based_on_heart_rate(heart_rate):
-    """Calculate and set playback speed based on heart rate and target zones."""
-    for _, zone in time_intervals:
-        zone_min, zone_max = heart_rate_zones[zone]
-        new_speed = calculate_tempo_adjustment(heart_rate, zone_min, zone_max)
-        set_playback_speed(new_speed)
-        break  # Exit after setting speed for the current interval
+    """Calculate and set playback speed based on heart rate and current zone."""
+    global current_zone, zone_index, zone_end_time
+
+    # Update the zone if time has elapsed
+    if time.time() >= zone_end_time:
+        # Move to the next interval
+        zone_index += 1
+        if zone_index < len(time_intervals):
+            # Update the current zone and end time
+            duration, current_zone = time_intervals[zone_index]
+            zone_end_time = time.time() + duration
+            print(f"Switched to zone: {current_zone} for the next {duration} seconds.")
+        else:
+            # End in cooldown if no more intervals
+            current_zone = "cooldown"
+
+    # Set speed based on the heart rate and current zone
+    zone_min, zone_max = heart_rate_zones[current_zone]
+    new_speed = calculate_tempo_adjustment(heart_rate, zone_min, zone_max)
+    set_playback_speed(new_speed)
 
 # Start a separate thread for continuous heart rate input
 threading.Thread(target=get_current_heart_rate, daemon=True).start()
