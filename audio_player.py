@@ -109,3 +109,5 @@ def play_song(song_path):
     stream.stop_stream()
     stream.close()
     p.terminate()
+    
+#made with assistance of ChatGPT: https://chatgpt.com/share/6722839a-fad4-800f-933a-1552d8787364

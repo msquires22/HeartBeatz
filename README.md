@@ -48,5 +48,9 @@ https://chatgpt.com/share/6716a487-0f8c-800f-9f7d-aaaa9ef7cbb5
 Tempo Changer: 
 https://stackoverflow.com/questions/75504433/changing-speed-of-song-while-its-playing-and-have-the-changed-effects-in-the-son
 
+main, main2, songlists, audioPlayer and app:
+https://chatgpt.com/share/6722839a-fad4-800f-933a-1552d8787364
+
+
 
 

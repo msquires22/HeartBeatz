@@ -41,8 +41,8 @@ def calculate_zones():
         "low": (int(maxHR * 0.5), int(maxHR * 0.75))
     }
     time_intervals = [
-        (10, "warmup"),
-        (10, "high"),
+        (180, "warmup"),
+        (180, "high"),
         (180, "low"),
         (180, "high"),
         (180, "low"),
@@ -109,3 +109,5 @@ def play_songs_with_ui_update(display_callback):
         
         # Play the song
         play_song(song_path)
+
+#made with assistance of ChatGPT: https://chatgpt.com/share/6722839a-fad4-800f-933a-1552d8787364

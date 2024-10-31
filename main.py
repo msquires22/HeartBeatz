@@ -35,8 +35,8 @@ heart_rate_zones = {
 
 # Define time intervals for each zone (in seconds)
 time_intervals = [
-    (15, "warmup"),  # 3 minutes in warmup
-    (15, "high"),    # 3 minutes in high intensity
+    (180, "warmup"),  # 3 minutes in warmup
+    (180, "high"),    # 3 minutes in high intensity
     (180, "low"),     # 3 minutes in low intensity
     (180, "high"),
     (180, "low"),
@@ -121,3 +121,5 @@ for song in playlist:
     song_path = song["file"]  # Extract the file path from the song dictionary
     print(f"Playing {song['name']}")
     play_song(song_path)
+    
+#made with assistance of ChatGPT: https://chatgpt.com/share/6722839a-fad4-800f-933a-1552d8787364

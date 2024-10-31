@@ -77,3 +77,5 @@ heart_rate_entry.bind("<Return>", on_heart_rate_enter)  # Bind Enter key to upda
 tk.Label(root, textvariable=current_hr_text).grid(row=6, column=0, columnspan=2)
 
 root.mainloop()
+
+#made with assistance of ChatGPT: https://chatgpt.com/share/6722839a-fad4-800f-933a-1552d8787364
