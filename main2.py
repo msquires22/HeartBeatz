@@ -41,9 +41,9 @@ def calculate_zones():
         "low": (int(maxHR * 0.5), int(maxHR * 0.75))
     }
     time_intervals = [
-        (180, "warmup"),
-        (180, "high"),
-        (180, "low"),
+        (15, "warmup"),
+        (15, "high"),
+        (15, "low"),
         (180, "high"),
         (180, "low"),
         (180, "high"),
@@ -109,5 +109,10 @@ def play_songs_with_ui_update(display_callback):
         
         # Play the song
         play_song(song_path)
+
+def get_time_remaining_in_zone():
+    """Calculate the time remaining in the current THRZ interval."""
+    return max(0, int(zone_end_time - time.time()))
+
 
 #made with assistance of ChatGPT: https://chatgpt.com/share/6722839a-fad4-800f-933a-1552d8787364
