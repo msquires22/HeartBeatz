@@ -76,6 +76,7 @@ def calculate_tempo_adjustment(heart_rate, zone_min, zone_max):
 def adjust_speed_based_on_heart_rate(heart_rate, display_callback):
     """Calculate and set playback speed based on heart rate and current zone."""
     global current_zone, zone_index, zone_end_time
+    print("entering adjusted speed")
 
     # Update the zone if time has elapsed
     if time.time() >= zone_end_time:
