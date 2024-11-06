@@ -41,15 +41,15 @@ def calculate_zones():
         "low": (int(maxHR * 0.5), int(maxHR * 0.75))
     }
     time_intervals = [
-        (15, "warmup"),
-        (15, "high"),
-        (15, "low"),
-        (180, "high"),
-        (180, "low"),
-        (180, "high"),
-        (180, "low"),
-        (180, "high"),
-        (180, "cooldown")
+        (120, "warmup"),
+        (120, "high"),
+        (120, "low"),
+        (120, "high"),
+        (120, "low"),
+        #(120, "high"),
+        #(120, "low"),
+        #(120, "high"),
+        (120, "cooldown")
     ]
     zone_index = 0
     current_zone = time_intervals[zone_index][1]

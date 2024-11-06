@@ -96,23 +96,23 @@ start_button.grid(row=2, column=0, columnspan=2, pady=10)
 
 # Display Fields
 
-tk.Label(root, text="Current Song:").grid(row=3, column=0, sticky="w")
-tk.Label(root, textvariable=display_text).grid(row=3, column=1, sticky="w")
+tk.Label(root, height=3, width=30, text="Current Song:").grid(row=3, column=0, sticky="w")
+tk.Label(root, height=3, width=30, textvariable=display_text).grid(row=3, column=1, sticky="w")
 
-tk.Label(root, text="Target Heart Rate Zone (THRZ):").grid(row=4, column=0, sticky="w")
-tk.Label(root, textvariable=thrz_text).grid(row=4, column=1, sticky="w")
+tk.Label(root, height=3, width=30, text="Target Heart Rate Zone (THRZ):").grid(row=4, column=0, sticky="w")
+tk.Label(root, height=3, width=30, textvariable=thrz_text).grid(row=4, column=1, sticky="w")
 
-tk.Label(root, text="Elapsed Workout Time:").grid(row=5, column=0, sticky="w")
-tk.Label(root, textvariable=elapsed_time_text).grid(row=5, column=1, sticky="w")
+tk.Label(root, height=3, width=30, text="Elapsed Workout Time:").grid(row=5, column=0, sticky="w")
+tk.Label(root, height=3, width=30, textvariable=elapsed_time_text).grid(row=5, column=1, sticky="w")
 
-tk.Label(root, text="Time Left in THRZ:").grid(row=6, column=0, sticky="w")
-tk.Label(root, textvariable=remaining_time_text).grid(row=6, column=1, sticky="w")
+tk.Label(root,height=3, width=30, text="Time Left in THRZ:").grid(row=6, column=0, sticky="w")
+tk.Label(root, height=3, width=30, textvariable=remaining_time_text).grid(row=6, column=1, sticky="w")
 
 #tk.Label(root, text="Enter Heart Rate:").grid(row=7, column=0, sticky="w")
 #heart_rate_entry = tk.Entry(root, textvariable=heart_rate)
 #heart_rate_entry.grid(row=7, column=1, pady=5, padx=5)
 #heart_rate_entry.bind("<Return>", on_heart_rate_enter)  # Bind Enter key to update heart rate
 
-tk.Label(root, textvariable=current_hr_text).grid(row=8, column=0, columnspan=2)
+tk.Label(root, height=3, width=30, textvariable=current_hr_text).grid(row=8, column=0, columnspan=2)
 
 root.mainloop()
