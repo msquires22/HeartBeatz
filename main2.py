@@ -62,8 +62,10 @@ def calculate_tempo_adjustment(heart_rate, zone_min, zone_max):
 
     if heart_rate < zone_min:
         difference = zone_min - heart_rate
+        #print(round(difference/10))     # make tempo fall into bins of 10
         max_difference = zone_min * 0.25
         tempo_increase = max_speed - (max_speed - 1.0) * math.exp(-difference / max_difference)
+        print(tempo_increase)
         return min(max(1.0, tempo_increase), max_speed)
     elif heart_rate > zone_max:
         difference = heart_rate - zone_max
