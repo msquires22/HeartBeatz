@@ -46,7 +46,7 @@ def play_song(song_path):
                     output=True)
 
     # Play audio with dynamic resampling
-    chunk_size = 1024
+    chunk_size = 2048
     data = song.readframes(chunk_size)
     while data:
         with lock:
