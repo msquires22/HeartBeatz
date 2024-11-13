@@ -57,6 +57,11 @@ def calculate_zones():
 
 def calculate_tempo_adjustment(heart_rate, zone_min, zone_max):
     """Adjust playback speed based on heart rate."""
+    
+    ## COMMENT THIS OUT IF ITS TOO JUMPY, MIGHT FIX OVER SENSITITVITY
+    # Round heart rate to the nearest multiple of 5
+    heart_rate = round(heart_rate / 5) * 5
+    
     max_speed = 1.15
     min_speed = 0.85
 
